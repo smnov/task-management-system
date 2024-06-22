@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package task_service;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "protos/taskservice.v1;taskservicev1";
+
+
+service TaskV1 {
+    rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+    rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+    rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
+    rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+}
+
+
+message CreateTaskRequest {
+    int64 user_id = 1;
+    string title = 2;
+    string description = 3;
+}
+
+message CreateTaskResponse {
+    int64 id = 1;
+}
+
+message GetTaskRequest {
+    int64 id = 1;
+}
+
+message GetTaskResponse {
+    int64 id = 1;
+    int64 user_id = 2;
+    string title = 3;
+    string description = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+message DeleteTaskRequest {
+    int64 id = 1;
+}
+
+ message DeleteTaskResponse {
+    int64 id = 1;
+ }
+
+ message UpdateTaskRequest {
+    int64 id = 1;
+    int64 user_id = 2;
+    string title = 3;
+    string description = 4;
+ }
+
+ message UpdateTaskResponse {
+    int64 id = 1;
+ }
