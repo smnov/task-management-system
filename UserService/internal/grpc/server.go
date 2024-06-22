@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	userv1 "github.com/smnov/task-management-system/Protos/protos/user_service_v1"
 )
 
 type Auth interface {
@@ -13,23 +14,23 @@ type Auth interface {
 
 
 type serverAPI struct {
-	userv1.UnimplementedAuthServer
+	userv1.UnimplementedUserV1Server
 	auth Auth
 }
 
 func Register(grpcServer *grpc.Server, auth Auth) {
-	ssov1.RegisterAuthServer(grpcServer, &serverAPI{auth: auth})
+	userv1.RegisterUserV1Server(grpcServer, &serverAPI{auth: auth})
 }
 
-func (s *serverAPI) Register(ctx context.Context, req *ssov1.RegisterRequest) (*ssov1.RegisterResponse, error) {
-	return &ssov1.RegisterResponse{}, nil
+func (s *serverAPI) Register(ctx context.Context, req *userv1.CreateUserRequest) (*userv1.CreateUserResponse, error) {
+	return &userv1.CreateUserResponse{}, nil
 }
 
-func (s *serverAPI) Login(ctx context.Context, req *ssov1.LoginRequest) (*ssov1.LoginResponse, error) {
+func (s *serverAPI) Login(ctx context.Context, req *userv1.LoginRequest) (*userv1.LoginResponse, error) {
 	token, err := s.auth.Login(ctx, req.Email, req.Password)
 	if err != nil {
 		return nil, err
 	}
-	resp := &ssov1.LoginResponse{Token: token}
+	resp := &userv1.LoginResponse{Token: token}
 	return resp, nil
 }
